@@ -8,13 +8,43 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
+    @IBOutlet var paletteView: UIView!
+    
+    @IBOutlet var redValue: UILabel!
+    @IBOutlet var greenValue: UILabel!
+    @IBOutlet var blueValue: UILabel!
+    
+    @IBOutlet var redController: UISlider!
+    @IBOutlet var greenController: UISlider!
+    @IBOutlet var blueController: UISlider!
+    
+    @IBOutlet var redColorTextField: UITextField!
+    @IBOutlet var greenColorTextField: UITextField!
+    @IBOutlet var blueColorTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    
     }
 
-
+    @IBAction func changeRedValue() {
+    }
+    
+    @IBAction func changeGreenValue() {
+    }
+    
+    @IBAction func changeBlueValue() {
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
