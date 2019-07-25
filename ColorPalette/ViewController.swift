@@ -26,6 +26,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        redValue.text = String(redController.value)
+        greenValue.text = String(greenController.value)
+        blueValue.text = String(blueController.value)
+        
+        redColorTextField.placeholder = String(redController.value)
+        greenColorTextField.placeholder = String(greenController.value)
+        blueColorTextField.placeholder = String(blueController.value)
     
     }
 
