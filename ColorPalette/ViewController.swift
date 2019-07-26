@@ -24,9 +24,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var greenColorTextField: UITextField!
     @IBOutlet var blueColorTextField: UITextField!
     
-    var roundedRedValue: Float = 0
-    var roundedGreenValue: Float = 0
-    var roundedBlueValue: Float = 0
+    private  var roundedValue: Float = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,11 +52,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         paletteView.layer.cornerRadius = 15
         
-        setViewColor(
-            view: paletteView,
-            red: redController.value,
-            green: greenController.value,
-            blue: blueController.value)
+        setViewColor()
         
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
@@ -78,55 +72,64 @@ class ViewController: UIViewController, UITextFieldDelegate {
         redColorTextField.inputAccessoryView = toolBar
         greenColorTextField.inputAccessoryView = toolBar
         blueColorTextField.inputAccessoryView = toolBar
+        
+        self.hideKeyboard()
+    }
+    
+    func setViewColor() {
+        paletteView.backgroundColor = UIColor(
+            red: CGFloat(redController.value),
+            green: CGFloat(greenController.value),
+            blue: CGFloat(blueController.value),
+            alpha: 1.0
+        )
     }
     
     @objc func donePressed(textField: UITextField) {
         view.endEditing(true)
+        
+        setDataFromTextField(textField: redColorTextField, controller: redController, textValue: redValue)
+        setDataFromTextField(textField: greenColorTextField, controller: greenController, textValue: greenValue)
+        setDataFromTextField(textField: blueColorTextField, controller: blueController, textValue: blueValue)
+        
+        setViewColor()
     }
-
-
+    
+    func setDataFromTextField(textField: UITextField, controller: UISlider, textValue: UILabel) {
+        guard let inputData = textField.text, !inputData.isEmpty else { return }
+        if let data = Float(inputData) {
+            if data >= 0 && data <= 1 {
+                controller.value = data
+                textValue.text = String(data)
+                textField.placeholder = String(data)
+                textField.text = ""
+            } else {
+                showAlert(textField: textField)
+            }
+        } else {
+            showAlert(textField: textField)
+        }
+    }
+    
     @IBAction func changeRedValue() {
-        roundedRedValue = roundf(redController.value * 100) / 100
-        redValue.text = String(roundedRedValue)
-        redColorTextField.placeholder = String(roundedRedValue)
-        setViewColor(
-            view: paletteView,
-            red: roundedRedValue,
-            green: roundedGreenValue,
-            blue: roundedBlueValue)
+        roundedValue = roundf(redController.value * 100) / 100
+        redValue.text = String(roundedValue)
+        redColorTextField.placeholder = String(roundedValue)
+        setViewColor()
     }
     
     @IBAction func changeGreenValue() {
-        roundedGreenValue = roundf(greenController.value * 100) / 100
-        greenValue.text = String(roundedGreenValue)
-        greenColorTextField.placeholder = String(roundedGreenValue)
-        setViewColor(
-            view: paletteView,
-            red: roundedRedValue,
-            green: roundedGreenValue,
-            blue: roundedBlueValue)
+        roundedValue = roundf(greenController.value * 100) / 100
+        greenValue.text = String(roundedValue)
+        greenColorTextField.placeholder = String(roundedValue)
+        setViewColor()
     }
     
     @IBAction func changeBlueValue() {
-        roundedBlueValue = roundf(blueController.value * 100) / 100
-        blueValue.text = String(roundedBlueValue)
-        blueColorTextField.placeholder = String(roundedBlueValue)
-        setViewColor(
-            view: paletteView,
-            red: roundedRedValue,
-            green: roundedGreenValue,
-            blue: roundedBlueValue)
-    }
-}
-
-extension ViewController {
-    private func setViewColor(view: UIView, red: Float, green: Float, blue: Float){
-        paletteView.backgroundColor = UIColor(
-            red: CGFloat(red),
-            green: CGFloat(green),
-            blue: CGFloat(blue),
-            alpha: 1.0
-        )
+        roundedValue = roundf(blueController.value * 100) / 100
+        blueValue.text = String(roundedValue)
+        blueColorTextField.placeholder = String(roundedValue)
+        setViewColor()
     }
 }
 
@@ -149,3 +152,17 @@ extension ViewController {
     }
 }
 
+extension ViewController {
+    private func hideKeyboard() {
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(self.dismissKeyboard)
+        )
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        
+    }
+}
