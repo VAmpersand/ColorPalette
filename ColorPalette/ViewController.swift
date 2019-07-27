@@ -99,7 +99,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         guard let inputData = textField.text, !inputData.isEmpty else { return }
         if let data = Float(inputData) {
             if data >= 0 && data <= 1 {
-                controller.value = data
+                controller.setValue(data, animated: true)
                 textValue.text = String(data)
                 textField.placeholder = String(data)
                 textField.text = ""
