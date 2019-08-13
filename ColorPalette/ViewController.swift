@@ -44,59 +44,44 @@ class ViewController: UIViewController, UITextFieldDelegate {
         redColorTextField.placeholder = String(redController.value)
         greenColorTextField.placeholder = String(greenController.value)
         blueColorTextField.placeholder = String(blueController.value)
-        
-        
+    
         redController.minimumTrackTintColor = .red
         greenController.minimumTrackTintColor = .green
         blueController.minimumTrackTintColor = .blue
         
         paletteView.layer.cornerRadius = 15
         
-        setViewColor()
-        
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        
-        let indent = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                     target: nil,
-                                     action: nil
-        )
-        
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
-                                         target: self,
-                                         action: #selector(self.donePressed)
-        )
-        
-        toolBar.setItems([indent, doneButton], animated: false)
-        
-        redColorTextField.inputAccessoryView = toolBar
-        greenColorTextField.inputAccessoryView = toolBar
-        blueColorTextField.inputAccessoryView = toolBar
-        
-        self.hideKeyboard()
+        setToolBar(textField: redColorTextField)
+        setToolBar(textField: greenColorTextField)
+        setToolBar(textField: blueColorTextField)
     }
     
-    func setViewColor() {
-        paletteView.backgroundColor = UIColor(
-            red: CGFloat(redController.value),
-            green: CGFloat(greenController.value),
-            blue: CGFloat(blueController.value),
-            alpha: 1.0
-        )
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        
+        setColorInView(textField: redColorTextField, controller: redController, textValue: redValue)
+        setColorInView(textField: greenColorTextField, controller: greenController, textValue: greenValue)
+        setColorInView(textField: blueColorTextField, controller: blueController, textValue: blueValue)
     }
     
     @objc func donePressed(textField: UITextField) {
         view.endEditing(true)
         
-        setDataFromTextField(textField: redColorTextField, controller: redController, textValue: redValue)
-        setDataFromTextField(textField: greenColorTextField, controller: greenController, textValue: greenValue)
-        setDataFromTextField(textField: blueColorTextField, controller: blueController, textValue: blueValue)
-        
-        setViewColor()
+        setColorInView(textField: redColorTextField, controller: redController, textValue: redValue)
+        setColorInView(textField: greenColorTextField, controller: greenController, textValue: greenValue)
+        setColorInView(textField: blueColorTextField, controller: blueController, textValue: blueValue)
     }
     
-    func setDataFromTextField(textField: UITextField, controller: UISlider, textValue: UILabel) {
-        guard let inputData = textField.text, !inputData.isEmpty else { return }
+    func setColorInView(textField: UITextField, controller: UISlider, textValue: UILabel) {
+        guard let inputData = textField.text, !inputData.isEmpty else {
+            paletteView.backgroundColor = UIColor(
+                red: CGFloat(redController.value),
+                green: CGFloat(greenController.value),
+                blue: CGFloat(blueController.value),
+                alpha: 1.0
+            )
+            return
+        }
         if let data = Float(inputData) {
             if data >= 0 && data <= 1 {
                 controller.setValue(data, animated: true)
@@ -111,25 +96,26 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    
     @IBAction func changeRedValue() {
         roundedValue = roundf(redController.value * 100) / 100
         redValue.text = String(roundedValue)
         redColorTextField.placeholder = String(roundedValue)
-        setViewColor()
+        setColorInView(textField: redColorTextField, controller: redController, textValue: redValue)
     }
     
     @IBAction func changeGreenValue() {
         roundedValue = roundf(greenController.value * 100) / 100
         greenValue.text = String(roundedValue)
         greenColorTextField.placeholder = String(roundedValue)
-        setViewColor()
+        setColorInView(textField: greenColorTextField, controller: greenController, textValue: greenValue)
     }
     
     @IBAction func changeBlueValue() {
         roundedValue = roundf(blueController.value * 100) / 100
         blueValue.text = String(roundedValue)
         blueColorTextField.placeholder = String(roundedValue)
-        setViewColor()
+        setColorInView(textField: blueColorTextField, controller: blueController, textValue: blueValue)
     }
 }
 
@@ -150,19 +136,23 @@ extension ViewController {
         alertWrongData.addAction(okAktion)
         present(alertWrongData, animated: true)
     }
-}
-
-extension ViewController {
-    private func hideKeyboard() {
-        let tap = UITapGestureRecognizer(
-            target: self,
-            action: #selector(self.dismissKeyboard)
-        )
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
+    
+    
+    private func setToolBar(textField: UITextField) {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
         
+        let indent = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                     target: nil,
+                                     action: nil )
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                         target: self,
+                                         action: #selector(self.donePressed))
+        
+        toolBar.setItems([indent, doneButton], animated: false)
+        
+        textField.inputAccessoryView = toolBar
     }
+    
 }
