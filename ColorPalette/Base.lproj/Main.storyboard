@@ -177,7 +177,7 @@
                                                     <action selector="rgbSlaider:" destination="BYZ-38-t0r" eventType="valueChanged" id="OLY-H6-Ry0"/>
                                                 </connections>
                                             </slider>
-                                            <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ig1-Mo-o0u">
+                                            <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ig1-Mo-o0u">
                                                 <rect key="frame" x="285" y="0.0" width="50" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="Zbe-hu-4Tc"/>
@@ -229,7 +229,7 @@
                     <connections>
                         <outlet property="blueLabel" destination="3gw-rn-g6s" id="gmZ-3m-jUm"/>
                         <outlet property="blueSlider" destination="lVU-AS-V0x" id="MVS-bC-9pj"/>
-                        <outlet property="blueTextField" destination="ig1-Mo-o0u" id="DBW-yy-Sbf"/>
+                        <outlet property="blueTextField" destination="ig1-Mo-o0u" id="URI-sH-buN"/>
                         <outlet property="greenLabel" destination="OLS-8D-CdX" id="ihh-Nc-9zk"/>
                         <outlet property="greenSlider" destination="ynZ-N2-UNK" id="1zG-is-g0e"/>
                         <outlet property="greenTextField" destination="LkX-AC-htY" id="kXU-3v-Frh"/>
