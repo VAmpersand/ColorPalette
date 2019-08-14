@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--First View Controller-->
         <scene sceneID="o5S-wg-j6h">
             <objects>
-                <viewController id="NWQ-v2-PLT" sceneMemberID="viewController">
+                <viewController id="NWQ-v2-PLT" customClass="FirstViewController" customModule="ColorPalette" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zRm-so-XxN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -25,28 +25,42 @@
                                     <navigationItem id="6Sl-xc-Zhk">
                                         <barButtonItem key="rightBarButtonItem" title="Settings" id="wn0-pS-afA">
                                             <connections>
-                                                <segue destination="BYZ-38-t0r" kind="show" id="qss-bj-LnT"/>
+                                                <action selector="settingsButtonPressed:" destination="NWQ-v2-PLT" id="mmB-pN-fTr"/>
+                                                <segue destination="BYZ-38-t0r" kind="show" identifier="segueToSettingsVC" id="qss-bj-LnT"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2M-4J-clP">
+                                <rect key="frame" x="20" y="99" width="335" height="659"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="h2M-4J-clP" firstAttribute="leading" secondItem="8lk-KN-fe9" secondAttribute="leading" constant="20" id="3Aa-uG-zOC"/>
+                            <constraint firstItem="8lk-KN-fe9" firstAttribute="bottom" secondItem="h2M-4J-clP" secondAttribute="bottom" constant="20" id="9rn-m9-wPs"/>
+                            <constraint firstItem="h2M-4J-clP" firstAttribute="top" secondItem="8lk-KN-fe9" secondAttribute="top" constant="55" id="GrO-U4-JUx"/>
+                            <constraint firstItem="8lk-KN-fe9" firstAttribute="trailing" secondItem="h2M-4J-clP" secondAttribute="trailing" constant="20" id="Ul9-jd-vGh"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="8lk-KN-fe9"/>
                     </view>
                     <navigationItem key="navigationItem" id="1gK-Q9-833">
                         <barButtonItem key="rightBarButtonItem" title="Settings" id="orY-aB-Jeh"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="displayView" destination="h2M-4J-clP" id="6Zu-RY-S1i"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UgR-zP-S74" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="139.13043478260872" y="18.75"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ColorPalette" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="SettingsViewController" customModule="ColorPalette" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,12 +196,24 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Settings" id="VRB-bE-U5V">
-                                        <barButtonItem key="rightBarButtonItem" title="Done" id="Ojq-mm-Vo1"/>
+                                        <barButtonItem key="rightBarButtonItem" style="plain" id="KPe-Ft-9Of">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="lsU-BP-YvR">
+                                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Done"/>
+                                                <connections>
+                                                    <action selector="doneButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="uWp-Sw-M1b"/>
+                                                </connections>
+                                            </button>
+                                            <connections>
+                                                <action selector="doneButtonPressed:" destination="BYZ-38-t0r" id="vIv-2N-VJn"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
-                        <color key="backgroundColor" red="0.51449901099999995" green="0.93712556059999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Tq0-7l-XFJ" secondAttribute="trailing" constant="20" id="ACw-tF-zMO"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Cyw-gi-rZV" secondAttribute="bottom" constant="470" id="CaM-Bn-BWC"/>

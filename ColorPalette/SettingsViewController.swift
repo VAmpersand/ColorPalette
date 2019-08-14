@@ -6,9 +6,13 @@
 //  Copyright © 2019 Viktor. All rights reserved.
 //
 
+protocol ColorDelegate {
+    func sendColor(red: CGFloat, green: CGFloat, blue: CGFloat)
+}
+
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var paletteView: UIView!
     
@@ -26,16 +30,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     private  var roundedValue: Float = 0
     
+    var color: UIColor!
+    
+    var delegate: ColorDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         
         self.redColorTextField.delegate = self
         self.greenColorTextField.delegate = self
         self.blueColorTextField.delegate = self
         
-        redController.value = 0
-        greenController.value = 0
-        blueController.value = 0
+        redController.value = Float(color.redValue)
+        greenController.value = Float(color.greenValue)
+        blueController.value = Float(color.blueValue)
+        
+        paletteView.backgroundColor = color
+        
         
         redValue.text = String(redController.value)
         greenValue.text = String(greenController.value)
@@ -44,7 +57,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         redColorTextField.placeholder = String(redController.value)
         greenColorTextField.placeholder = String(greenController.value)
         blueColorTextField.placeholder = String(blueController.value)
-    
+        
         redController.minimumTrackTintColor = .red
         greenController.minimumTrackTintColor = .green
         blueController.minimumTrackTintColor = .blue
@@ -56,23 +69,29 @@ class ViewController: UIViewController, UITextFieldDelegate {
         setToolBar(textField: blueColorTextField)
     }
     
+    
+    @IBAction func doneButtonPressed() {
+        delegate?.sendColor(red: CGFloat(redController.value),
+                            green: CGFloat(greenController.value),
+                            blue: CGFloat(blueController.value))
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         
-        setColorInView(textField: redColorTextField, controller: redController, textValue: redValue)
-        setColorInView(textField: greenColorTextField, controller: greenController, textValue: greenValue)
-        setColorInView(textField: blueColorTextField, controller: blueController, textValue: blueValue)
+        setCurrentValueColore()
     }
     
     @objc func donePressed(textField: UITextField) {
         view.endEditing(true)
         
-        setColorInView(textField: redColorTextField, controller: redController, textValue: redValue)
-        setColorInView(textField: greenColorTextField, controller: greenController, textValue: greenValue)
-        setColorInView(textField: blueColorTextField, controller: blueController, textValue: blueValue)
+        setCurrentValueColore()
     }
     
-    func setColorInView(textField: UITextField, controller: UISlider, textValue: UILabel) {
+    private func setColorInView(textField: UITextField, controller: UISlider, textValue: UILabel) {
         guard let inputData = textField.text, !inputData.isEmpty else {
             paletteView.backgroundColor = UIColor(
                 red: CGFloat(redController.value),
@@ -96,6 +115,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    private func setCurrentValueColore() {
+        setColorInView(textField: redColorTextField, controller: redController, textValue: redValue)
+        setColorInView(textField: greenColorTextField, controller: greenController, textValue: greenValue)
+        setColorInView(textField: blueColorTextField, controller: blueController, textValue: blueValue)
+    }
     
     @IBAction func changeRedValue() {
         roundedValue = roundf(redController.value * 100) / 100
@@ -119,7 +143,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
 }
 
-extension ViewController {
+extension SettingsViewController {
     private func showAlert(textField: UITextField) {
         let alertWrongData = UIAlertController(
             title: "Wrong data!",
@@ -154,5 +178,13 @@ extension ViewController {
         
         textField.inputAccessoryView = toolBar
     }
-    
 }
+
+extension UIColor {
+    var redValue: CGFloat{ return CIColor(color: self).red }
+    
+    var greenValue: CGFloat{ return CIColor(color: self).green }
+    
+    var blueValue: CGFloat{ return CIColor(color: self).blue }
+}
+
