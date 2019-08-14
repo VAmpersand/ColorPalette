@@ -25,7 +25,6 @@
                                     <navigationItem id="6Sl-xc-Zhk">
                                         <barButtonItem key="rightBarButtonItem" title="Settings" id="wn0-pS-afA">
                                             <connections>
-                                                <action selector="settingsButtonPressed:" destination="NWQ-v2-PLT" id="mmB-pN-fTr"/>
                                                 <segue destination="BYZ-38-t0r" kind="show" identifier="segueToSettingsVC" id="qss-bj-LnT"/>
                                             </connections>
                                         </barButtonItem>
@@ -99,7 +98,7 @@
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nRH-8L-nFK">
                                                 <rect key="frame" x="104" y="0.0" width="173" height="31"/>
                                                 <connections>
-                                                    <action selector="changeRedValue" destination="BYZ-38-t0r" eventType="valueChanged" id="J39-rN-KmS"/>
+                                                    <action selector="rgbSlaider:" destination="BYZ-38-t0r" eventType="valueChanged" id="EzW-5T-xp7"/>
                                                 </connections>
                                             </slider>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="72j-bw-nqN">
@@ -134,13 +133,13 @@
                                                 <color key="textColor" red="0.11278220266103745" green="0.094037793576717377" blue="0.66638940572738647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ynZ-N2-UNK">
+                                            <slider opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ynZ-N2-UNK">
                                                 <rect key="frame" x="104" y="0.0" width="173" height="31"/>
                                                 <connections>
-                                                    <action selector="changeGreenValue" destination="BYZ-38-t0r" eventType="valueChanged" id="lCO-xU-c4d"/>
+                                                    <action selector="rgbSlaider:" destination="BYZ-38-t0r" eventType="valueChanged" id="zEK-bf-eId"/>
                                                 </connections>
                                             </slider>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LkX-AC-htY">
+                                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LkX-AC-htY">
                                                 <rect key="frame" x="285" y="0.0" width="50" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="od7-zP-nce"/>
@@ -172,13 +171,13 @@
                                                 <color key="textColor" red="0.11278220266103745" green="0.094037793576717377" blue="0.66638940572738647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lVU-AS-V0x">
+                                            <slider opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lVU-AS-V0x">
                                                 <rect key="frame" x="104" y="0.0" width="173" height="31"/>
                                                 <connections>
-                                                    <action selector="changeBlueValue" destination="BYZ-38-t0r" eventType="valueChanged" id="cjS-Y9-sap"/>
+                                                    <action selector="rgbSlaider:" destination="BYZ-38-t0r" eventType="valueChanged" id="OLY-H6-Ry0"/>
                                                 </connections>
                                             </slider>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ig1-Mo-o0u">
+                                            <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ig1-Mo-o0u">
                                                 <rect key="frame" x="285" y="0.0" width="50" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="Zbe-hu-4Tc"/>
@@ -228,16 +227,16 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="blueColorTextField" destination="ig1-Mo-o0u" id="DBW-yy-Sbf"/>
-                        <outlet property="blueController" destination="lVU-AS-V0x" id="MVS-bC-9pj"/>
-                        <outlet property="blueValue" destination="3gw-rn-g6s" id="gmZ-3m-jUm"/>
-                        <outlet property="greenColorTextField" destination="LkX-AC-htY" id="kXU-3v-Frh"/>
-                        <outlet property="greenController" destination="ynZ-N2-UNK" id="1zG-is-g0e"/>
-                        <outlet property="greenValue" destination="OLS-8D-CdX" id="ihh-Nc-9zk"/>
+                        <outlet property="blueLabel" destination="3gw-rn-g6s" id="gmZ-3m-jUm"/>
+                        <outlet property="blueSlider" destination="lVU-AS-V0x" id="MVS-bC-9pj"/>
+                        <outlet property="blueTextField" destination="ig1-Mo-o0u" id="DBW-yy-Sbf"/>
+                        <outlet property="greenLabel" destination="OLS-8D-CdX" id="ihh-Nc-9zk"/>
+                        <outlet property="greenSlider" destination="ynZ-N2-UNK" id="1zG-is-g0e"/>
+                        <outlet property="greenTextField" destination="LkX-AC-htY" id="kXU-3v-Frh"/>
                         <outlet property="paletteView" destination="Cyw-gi-rZV" id="jIb-QS-Xel"/>
-                        <outlet property="redColorTextField" destination="72j-bw-nqN" id="Uie-9r-aco"/>
-                        <outlet property="redController" destination="nRH-8L-nFK" id="to0-EV-xt2"/>
-                        <outlet property="redValue" destination="SWh-5N-bTS" id="caY-W4-2YR"/>
+                        <outlet property="redLabel" destination="SWh-5N-bTS" id="caY-W4-2YR"/>
+                        <outlet property="redSlider" destination="nRH-8L-nFK" id="to0-EV-xt2"/>
+                        <outlet property="redTextField" destination="72j-bw-nqN" id="Uie-9r-aco"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

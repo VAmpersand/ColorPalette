@@ -7,170 +7,156 @@
 //
 
 protocol ColorDelegate {
-    func sendColor(red: CGFloat, green: CGFloat, blue: CGFloat)
+    func sendColor(color: UIColor)
 }
 
 import UIKit
 
-class SettingsViewController: UIViewController, UITextFieldDelegate {
+class SettingsViewController: UIViewController {
     
     @IBOutlet var paletteView: UIView!
     
-    @IBOutlet var redValue: UILabel!
-    @IBOutlet var greenValue: UILabel!
-    @IBOutlet var blueValue: UILabel!
+    @IBOutlet var redLabel: UILabel!
+    @IBOutlet var greenLabel: UILabel!
+    @IBOutlet var blueLabel: UILabel!
     
-    @IBOutlet var redController: UISlider!
-    @IBOutlet var greenController: UISlider!
-    @IBOutlet var blueController: UISlider!
+    @IBOutlet var redSlider: UISlider!
+    @IBOutlet var greenSlider: UISlider!
+    @IBOutlet var blueSlider: UISlider!
     
-    @IBOutlet var redColorTextField: UITextField!
-    @IBOutlet var greenColorTextField: UITextField!
-    @IBOutlet var blueColorTextField: UITextField!
-    
-    private  var roundedValue: Float = 0
+    @IBOutlet var redTextField: UITextField!
+    @IBOutlet var greenTextField: UITextField!
+    @IBOutlet var blueTextField: UITextField!
     
     var color: UIColor!
-    
     var delegate: ColorDelegate?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         
-        self.redColorTextField.delegate = self
-        self.greenColorTextField.delegate = self
-        self.blueColorTextField.delegate = self
-        
-        redController.value = Float(color.redValue)
-        greenController.value = Float(color.greenValue)
-        blueController.value = Float(color.blueValue)
+        redSlider.value = Float(color.redValue)
+        greenSlider.value = Float(color.greenValue)
+        blueSlider.value = Float(color.blueValue)
         
         paletteView.backgroundColor = color
         paletteView.layer.cornerRadius = 15
         
-        redValue.text = String(redController.value)
-        greenValue.text = String(greenController.value)
-        blueValue.text = String(blueController.value)
+        redSlider.minimumTrackTintColor = .red
+        greenSlider.minimumTrackTintColor = .green
         
-        redColorTextField.placeholder = String(redController.value)
-        greenColorTextField.placeholder = String(greenController.value)
-        blueColorTextField.placeholder = String(blueController.value)
+        setColore()
+        setValueForLabel()
+        setValueForTextField()
         
-        redController.minimumTrackTintColor = .red
-        greenController.minimumTrackTintColor = .green
-        blueController.minimumTrackTintColor = .blue
+        setToolBar(textField: redTextField)
+        setToolBar(textField: greenTextField)
+        setToolBar(textField: blueTextField)
         
-        setToolBar(textField: redColorTextField)
-        setToolBar(textField: greenColorTextField)
-        setToolBar(textField: blueColorTextField)
+        redTextField.delegate = self
+        greenTextField.delegate = self
+        blueTextField.delegate = self
     }
     
     
     @IBAction func doneButtonPressed() {
-        delegate?.sendColor(red: CGFloat(redController.value),
-                            green: CGFloat(greenController.value),
-                            blue: CGFloat(blueController.value))
+        color = UIColor(red: CGFloat(redSlider.value),
+                        green: CGFloat(greenSlider.value),
+                        blue: CGFloat(blueSlider.value),
+                        alpha: 1)
+        delegate?.sendColor(color: color)
         dismiss(animated: true, completion: nil)
     }
     
+    private func setColore() {
+        paletteView.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: 1.0
+        )
+    }
     
+    @IBAction func rgbSlaider(_ sender: UISlider) {
+        switch sender.tag {
+        case 0:
+            redLabel.text = string(from: redSlider)
+            redTextField.text = string(from: redSlider)
+        case 1:
+            greenLabel.text = string(from: greenSlider)
+            greenTextField.text = string(from: greenSlider)
+        case 2:
+            blueLabel.text = string(from: blueSlider)
+            blueTextField.text = string(from: blueSlider)
+        default:
+            break
+        }
+        
+        setColore()
+    }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-        setCurrentValueColore()
+    private func setValueForLabel() {
+        redLabel.text = string(from: redSlider)
+        greenLabel.text = string(from: greenSlider)
+        blueLabel.text = string(from: blueSlider)
+    }
+    
+    private func setValueForTextField() {
+        redTextField.text = string(from: redSlider)
+        greenTextField.text = string(from: greenSlider)
+        blueTextField.text = string(from: blueSlider)
+    }
+    
+    private func string(from slider: UISlider) -> String {
+        return String(roundf(slider.value * 100) / 100)
+    }
+}
+
+extension SettingsViewController: UITextFieldDelegate {
+    
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
     
     @objc func keyboardsDoneButtonPressed(textField: UITextField) {
         view.endEditing(true)
-        setCurrentValueColore()
     }
     
-    private func setColorInView(textField: UITextField, controller: UISlider, textValue: UILabel) {
-        guard let inputData = textField.text, !inputData.isEmpty else {
-            paletteView.backgroundColor = UIColor(
-                red: CGFloat(redController.value),
-                green: CGFloat(greenController.value),
-                blue: CGFloat(blueController.value),
-                alpha: 1.0
-            )
-            return
-        }
-        if let data = Float(inputData) {
-            if data >= 0 && data <= 1 {
-                controller.setValue(data, animated: true)
-                textValue.text = String(data)
-                textField.placeholder = String(data)
-                textField.text = ""
-            } else {
-                showAlert(textField: textField)
-            }
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        guard let text = textField.text else { return }
+        
+        if let currentValue = Float(text) {
+            switch textField.tag {
+            case 0: redSlider.value = currentValue
+            case 1: greenSlider.value = currentValue
+            case 2: blueSlider.value = currentValue
+            default: break }
+            
+            setColore()
+            setValueForLabel()
         } else {
-            showAlert(textField: textField)
+            showAlert()
+            
         }
-    }
-    
-    private func setCurrentValueColore() {
-        setColorInView(textField: redColorTextField,
-                       controller: redController,
-                       textValue: redValue)
-        setColorInView(textField: greenColorTextField,
-                       controller: greenController,
-                       textValue: greenValue)
-        setColorInView(textField: blueColorTextField,
-                       controller: blueController,
-                       textValue: blueValue)
-    }
-    
-    @IBAction func changeRedValue() {
-        roundedValue = roundf(redController.value * 100) / 100
-        redValue.text = String(roundedValue)
-        redColorTextField.placeholder = String(roundedValue)
-        setColorInView(textField: redColorTextField,
-                       controller: redController,
-                       textValue: redValue)
-    }
-    
-    @IBAction func changeGreenValue() {
-        roundedValue = roundf(greenController.value * 100) / 100
-        greenValue.text = String(roundedValue)
-        greenColorTextField.placeholder = String(roundedValue)
-        setColorInView(textField: greenColorTextField,
-                       controller: greenController,
-                       textValue: greenValue)
-    }
-    
-    @IBAction func changeBlueValue() {
-        roundedValue = roundf(blueController.value * 100) / 100
-        blueValue.text = String(roundedValue)
-        blueColorTextField.placeholder = String(roundedValue)
-        setColorInView(textField: blueColorTextField,
-                       controller: blueController,
-                       textValue: blueValue)
     }
 }
 
 extension SettingsViewController {
-    private func showAlert(textField: UITextField) {
+    private func showAlert() {
         let alertWrongData = UIAlertController(
             title: "Wrong data!",
             message: "Enter data in range from 0 to 1",
             preferredStyle: .alert
         )
-        
-        let okAktion = UIAlertAction(
-            title: "OK",
-            style: .default) { _ in
-                textField.text = ""
-        }
-        
+        let okAktion = UIAlertAction(title: "OK", style: .default)
         alertWrongData.addAction(okAktion)
         present(alertWrongData, animated: true)
     }
     
-    
-    private func setToolBar(textField: UITextField) {
+    func setToolBar(textField: UITextField) {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         
