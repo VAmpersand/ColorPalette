@@ -48,7 +48,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         blueController.value = Float(color.blueValue)
         
         paletteView.backgroundColor = color
-        
+        paletteView.layer.cornerRadius = 15
         
         redValue.text = String(redController.value)
         greenValue.text = String(greenController.value)
@@ -61,8 +61,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         redController.minimumTrackTintColor = .red
         greenController.minimumTrackTintColor = .green
         blueController.minimumTrackTintColor = .blue
-        
-        paletteView.layer.cornerRadius = 15
         
         setToolBar(textField: redColorTextField)
         setToolBar(textField: greenColorTextField)
@@ -81,13 +79,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
-        
         setCurrentValueColore()
     }
     
-    @objc func donePressed(textField: UITextField) {
+    @objc func keyboardsDoneButtonPressed(textField: UITextField) {
         view.endEditing(true)
-        
         setCurrentValueColore()
     }
     
@@ -116,30 +112,42 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func setCurrentValueColore() {
-        setColorInView(textField: redColorTextField, controller: redController, textValue: redValue)
-        setColorInView(textField: greenColorTextField, controller: greenController, textValue: greenValue)
-        setColorInView(textField: blueColorTextField, controller: blueController, textValue: blueValue)
+        setColorInView(textField: redColorTextField,
+                       controller: redController,
+                       textValue: redValue)
+        setColorInView(textField: greenColorTextField,
+                       controller: greenController,
+                       textValue: greenValue)
+        setColorInView(textField: blueColorTextField,
+                       controller: blueController,
+                       textValue: blueValue)
     }
     
     @IBAction func changeRedValue() {
         roundedValue = roundf(redController.value * 100) / 100
         redValue.text = String(roundedValue)
         redColorTextField.placeholder = String(roundedValue)
-        setColorInView(textField: redColorTextField, controller: redController, textValue: redValue)
+        setColorInView(textField: redColorTextField,
+                       controller: redController,
+                       textValue: redValue)
     }
     
     @IBAction func changeGreenValue() {
         roundedValue = roundf(greenController.value * 100) / 100
         greenValue.text = String(roundedValue)
         greenColorTextField.placeholder = String(roundedValue)
-        setColorInView(textField: greenColorTextField, controller: greenController, textValue: greenValue)
+        setColorInView(textField: greenColorTextField,
+                       controller: greenController,
+                       textValue: greenValue)
     }
     
     @IBAction func changeBlueValue() {
         roundedValue = roundf(blueController.value * 100) / 100
         blueValue.text = String(roundedValue)
         blueColorTextField.placeholder = String(roundedValue)
-        setColorInView(textField: blueColorTextField, controller: blueController, textValue: blueValue)
+        setColorInView(textField: blueColorTextField,
+                       controller: blueController,
+                       textValue: blueValue)
     }
 }
 
@@ -172,7 +180,7 @@ extension SettingsViewController {
         
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
                                          target: self,
-                                         action: #selector(self.donePressed))
+                                         action: #selector(self.keyboardsDoneButtonPressed))
         
         toolBar.setItems([indent, doneButton], animated: false)
         
@@ -181,10 +189,9 @@ extension SettingsViewController {
 }
 
 extension UIColor {
+    
     var redValue: CGFloat{ return CIColor(color: self).red }
-    
     var greenValue: CGFloat{ return CIColor(color: self).green }
-    
     var blueValue: CGFloat{ return CIColor(color: self).blue }
 }
 
